@@ -19,6 +19,7 @@ startVM () {
 init () {
 	if [[ -f "$vm" ]]
 	then
+		echo "sshfs $USER@10.0.2.2:$HOME/vmShared ./shared -o IdentityFile=$(pwd)/key" > ./mountTool.sh
 		setupDiskImg
 	fi
 }
@@ -69,7 +70,7 @@ mosInstall () {
 
 if [ "$1" == "start" ]; then
 	sudo /usr/sbin/sshd
-	[ -d "$HOME/vmShared" ] && mkdir $HOME/vmShared
+	[ ! -d "$HOME/vmShared" ] && mkdir $HOME/vmShared
 	startVM
 	sudo kill -15 $(pgrep sshd)
 	exit
